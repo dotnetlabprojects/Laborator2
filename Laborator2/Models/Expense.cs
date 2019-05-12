@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Laborator2.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace Laborator2
         public string Currency { get; set; }
         [EnumDataType(typeof(Type))]
         public Type Type { get; set; }
+        public List<Comment> Comments { get; set; }
 
 }
 }
