@@ -22,23 +22,24 @@ namespace Laborator2.Controllers
         [HttpGet]
         public IEnumerable<Expense> Get([FromQuery]Type? type, [FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
-            IQueryable<Expense> result = context.Expenses.Include(c=>c.Comments);
+            IQueryable<Expense> result = context.Expenses.Include(c => c.Comments);
 
             if (from == null && to == null && type == null)
             {
                 return result;
             }
-            if (from == null && to == null && type != null)
+            if (type != null)
             {
-                 result= result.Where(e=>e.Type.Equals(type));
+                result = result.Where(e => e.Type.Equals(type));
             }
+
             if (from != null)
             {
-                result = result.Where(e => e.Date >= from && e.Type.Equals(type));
+                result = result.Where(e => e.Date >= from);
             }
             if (to != null)
             {
-                result = result.Where(e => e.Date <= to && e.Type.Equals(type));
+                result = result.Where(e => e.Date <= to);
             }
             return result;
         }
@@ -85,7 +86,7 @@ namespace Laborator2.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var existing = context.Expenses.FirstOrDefault(product => product.Id == id);
+            var existing = context.Expenses.Include(e=>e.Comments).FirstOrDefault(product => product.Id == id);
             if (existing == null)
             {
                 return NotFound();
