@@ -1,4 +1,5 @@
 ﻿using Laborator2.Models;
+using Laborator2.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,88 +13,106 @@ namespace Laborator2.Controllers
     [ApiController]
     public class ExpensesController : ControllerBase
     {
-        private ExpensesDbContext context;
+        private IExpenseService expenseService;
 
-        public ExpensesController(ExpensesDbContext context)
+        public ExpensesController(IExpenseService expenseService)
         {
-            this.context = context;
+            this.expenseService = expenseService;
         }
-        // GET: api/Expenses
+       
+        /// <summary>
+        /// Get all expenses
+        /// </summary>
+       
+        /// <param name="type">Optional , filter by type of expense</param>
+        /// <param name="from">Optional , filter by minimum date </param>
+        /// <param name="to">Optional , filter by maximum date</param>
+        /// <returns>List of expenses objects</returns>
         [HttpGet]
         public IEnumerable<Expense> Get([FromQuery]Type? type, [FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
-            IQueryable<Expense> result = context.Expenses.Include(c => c.Comments);
-
-            if (from == null && to == null && type == null)
-            {
-                return result;
-            }
-            if (type != null)
-            {
-                result = result.Where(e => e.Type.Equals(type));
-            }
-
-            if (from != null)
-            {
-                result = result.Where(e => e.Date >= from);
-            }
-            if (to != null)
-            {
-                result = result.Where(e => e.Date <= to);
-            }
-            return result;
+            return expenseService.GetAll(type,from,to);
         }
 
         // GET: api/Expenses/1
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
-            var existing = context.Expenses.FirstOrDefault(product => product.Id == id);
-            if (existing == null)
+            var found = expenseService.GetById(id);
+
+            if (found == null)
             {
                 return NotFound();
             }
 
-            return Ok(existing);
+            return Ok(found);
         }
 
-        // POST: api/Expenses
+        /// <summary>
+        /// Add expense
+        /// </summary>
+        ///   <remarks>
+        /// Sample request:
+        ///
+        ///  {
+        ///  id: 7,
+        ///  description: "red dress",
+        ///  sum: 500,
+        ///  location: "Iulius Mall",
+        ///  date: "2011-04-22T00:00:00",
+        ///  currency: "lei",
+        ///  type: 3,
+        ///  comments: [
+        ///         {
+        ///         id: 3,
+        ///         text: "first comment",
+        ///         importan: false
+        ///         },
+        ///         {
+        ///         id: 4,
+        ///         text: "second comment",
+        ///         importan: false
+        ///         }
+        ///           ]
+        ///  }
+        ///
+        /// </remarks>
+        /// <param name="expense">The expense to add</param>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
         [HttpPost]
         public void Post([FromBody] Expense expense)
         {
-            context.Expenses.Add(expense);
-            context.SaveChanges();
+            expenseService.Create(expense);
         }
 
         // PUT: api/Expenses/3
+        /// <summary>
+        /// Update expense
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="expense"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Expense expense)
         {
-            var existing = context.Expenses.AsNoTracking().FirstOrDefault(f => f.Id == id);
-            if (existing == null)
-            {
-                context.Expenses.Add(expense);
-                context.SaveChanges();
+            var result = expenseService.Upsert(id, expense);
+           
                 return Ok(expense);
-            }
-            expense.Id = id;
-            context.Expenses.Update(expense);
-            context.SaveChanges();
-            return Ok(expense);
+         
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var existing = context.Expenses.Include(e=>e.Comments).FirstOrDefault(product => product.Id == id);
-            if (existing == null)
+            var result = expenseService.Delete(id);
+            if (result == null)
             {
                 return NotFound();
             }
-            context.Expenses.Remove(existing);
-            context.SaveChanges();
-            return Ok();
+           
+            return Ok(result);
         }
     }
 }
