@@ -24,6 +24,8 @@ namespace Laborator2.Controllers
         /// </summary>
         /// <param name="filter">Filter by text</param>
         /// <returns>A list of comments</returns>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
         [HttpGet]
         public IEnumerable<CommentsGetModel> Get([FromQuery]string filter)
         {

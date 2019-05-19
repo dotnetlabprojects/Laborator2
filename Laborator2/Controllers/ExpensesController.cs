@@ -19,15 +19,17 @@ namespace Laborator2.Controllers
         {
             this.expenseService = expenseService;
         }
-       
+
         /// <summary>
         /// Get all expenses
         /// </summary>
-       
+
         /// <param name="type">Optional , filter by type of expense</param>
         /// <param name="from">Optional , filter by minimum date </param>
         /// <param name="to">Optional , filter by maximum date</param>
         /// <returns>List of expenses objects</returns>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(404)]
         [HttpGet]
         public IEnumerable<Expense> Get([FromQuery]Type? type, [FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
@@ -36,12 +38,14 @@ namespace Laborator2.Controllers
            
         }
 
-       
+
         /// <summary>
         /// GET: api/Expenses/1
         /// </summary>
         /// <param name="id">expense id</param>
         /// <returns>the expense with the given id</returns>
+         [ProducesResponseType(201)]
+        [ProducesResponseType(404)]
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
@@ -86,7 +90,7 @@ namespace Laborator2.Controllers
         /// </remarks>
         /// <param name="expense">The expense to add</param>
         [ProducesResponseType(201)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [HttpPost]
         public void Post([FromBody] Expense expense)
         {
@@ -101,6 +105,8 @@ namespace Laborator2.Controllers
         /// <param name="expense">expense to update</param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
         public IActionResult Put(int id, [FromBody] Expense expense)
         {
             var result = expenseService.Upsert(id, expense);
@@ -109,12 +115,14 @@ namespace Laborator2.Controllers
          
         }
 
-      
+
         /// <summary>
         /// DELETE: api/ApiWithActions/5
         /// </summary>
         /// <param name="id">expense id  to delete</param>
         /// <returns>an expense</returns>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(404)]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
