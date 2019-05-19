@@ -31,10 +31,17 @@ namespace Laborator2.Controllers
         [HttpGet]
         public IEnumerable<Expense> Get([FromQuery]Type? type, [FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
-            return expenseService.GetAll(type,from,to);
+           return expenseService.GetAll(type,from,to);
+           // return expenseService.GetAllComments();
+           
         }
 
-        // GET: api/Expenses/1
+       
+        /// <summary>
+        /// GET: api/Expenses/1
+        /// </summary>
+        /// <param name="id">expense id</param>
+        /// <returns>the expense with the given id</returns>
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
@@ -86,12 +93,12 @@ namespace Laborator2.Controllers
             expenseService.Create(expense);
         }
 
-        // PUT: api/Expenses/3
+
         /// <summary>
-        /// Update expense
+        ///  PUT: api/Expenses/3
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="expense"></param>
+        /// <param name="id">the expense id to update</param>
+        /// <param name="expense">expense to update</param>
         /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Expense expense)
@@ -102,7 +109,12 @@ namespace Laborator2.Controllers
          
         }
 
-        // DELETE: api/ApiWithActions/5
+      
+        /// <summary>
+        /// DELETE: api/ApiWithActions/5
+        /// </summary>
+        /// <param name="id">expense id  to delete</param>
+        /// <returns>an expense</returns>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

@@ -10,6 +10,7 @@ namespace Laborator2.Services
     public interface IExpenseService
     {
         IEnumerable<Expense> GetAll(Type? type=null ,DateTime? from=null, DateTime? to=null);
+        IEnumerable<Comment> GetAllComments();
         Expense GetById(int id);
         Expense Create(Expense expense);
         Expense Upsert(int id,Expense expense);
@@ -89,5 +90,13 @@ namespace Laborator2.Services
                 .Include(e => e.Comments)
                 .FirstOrDefault(e => e.Id == id);
         }
+
+        public IEnumerable<Comment> GetAllComments()
+        {
+            IQueryable<Comment> result = context.Comments;
+
+            return result;
+        }
+
     }
 }
