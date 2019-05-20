@@ -9,11 +9,10 @@ namespace Laborator2.Services
 {
     public interface IExpenseService
     {
-        IEnumerable<Expense> GetAll(Type? type=null ,DateTime? from=null, DateTime? to=null);
-        IEnumerable<Comment> GetAllComments();
+        IEnumerable<Expense> GetAll(Type? type = null, DateTime? from = null, DateTime? to = null);
         Expense GetById(int id);
         Expense Create(Expense expense);
-        Expense Upsert(int id,Expense expense);
+        Expense Upsert(int id, Expense expense);
         Expense Delete(int id);
     }
 
@@ -35,7 +34,7 @@ namespace Laborator2.Services
 
         public Expense Delete(int id)
         {
-            var existing = context.Expenses.Include(e => e.Comments).FirstOrDefault(product => product.Id == id);
+            var existing = context.Expenses.Include(e => e.Comments).FirstOrDefault(expense => expense.Id == id);
             if (existing == null)
             {
                 return null;
@@ -45,9 +44,9 @@ namespace Laborator2.Services
             return existing;
         }
 
-        public IEnumerable<Expense> GetAll(Type? type=null, DateTime? from=null, DateTime? to=null)
+        public IEnumerable<Expense> GetAll(Type? type = null, DateTime? from = null, DateTime? to = null)
         {
-             IQueryable<Expense> result = context.Expenses.Include(c => c.Comments);
+            IQueryable<Expense> result = context.Expenses.Include(c => c.Comments);
 
             if (from == null && to == null && type == null)
             {
@@ -86,17 +85,7 @@ namespace Laborator2.Services
 
         public Expense GetById(int id)
         {
-            return context.Expenses
-                .Include(e => e.Comments)
-                .FirstOrDefault(e => e.Id == id);
+            return context.Expenses.Include(e => e.Comments).FirstOrDefault(e => e.Id == id);
         }
-
-        public IEnumerable<Comment> GetAllComments()
-        {
-            IQueryable<Comment> result = context.Comments;
-
-            return result;
-        }
-
     }
 }

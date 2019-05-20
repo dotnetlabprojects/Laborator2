@@ -10,10 +10,10 @@ namespace Laborator2.Services
 {
     public interface ICommentService
     {
-        IEnumerable<CommentsGetModel> GetAllComments(string text);  
+        IEnumerable<CommentsGetModel> GetAllComments(string text);
     }
 
-    public class CommentService: ICommentService
+    public class CommentService : ICommentService
     {
         private ExpensesDbContext context;
 
@@ -22,50 +22,36 @@ namespace Laborator2.Services
             this.context = context;
         }
 
-        public IEnumerable<CommentsGetModel> GetAllComments(string text)
+        public IEnumerable<CommentsGetModel> GetAllComments(string filterText)
         {
             IQueryable<Expense> result = context.Expenses.Include(c => c.Comments);
 
             List<CommentsGetModel> resultComments = new List<CommentsGetModel>();
             List<CommentsGetModel> resultCommentsNoFilter = new List<CommentsGetModel>();
 
-            foreach ( Expense e in result)
+            foreach (Expense expense in result)
             {
-                e.Comments.ForEach(c =>
+                expense.Comments.ForEach(comment =>
                 {
-                    if(c.Text==null||text==null )
+                    CommentsGetModel newComment = CommentsGetModel.ConvertToCommentsGetModel(comment, expense);
+                    
+                    if (comment.Text == null || filterText == null)
                     {
-                        CommentsGetModel comment = new CommentsGetModel
-                        {
-                            Id = c.Id,
-                            Importan = c.Importan,
-                            Text = c.Text,
-                            expenseId = e.Id
-
-                        };
-                        resultCommentsNoFilter.Add(comment);
-
-
-                    }else if (c.Text.Contains(text))
-                    {
-                        CommentsGetModel comment = new CommentsGetModel
-                        {
-                            Id = c.Id,
-                            Importan = c.Importan,
-                            Text = c.Text,
-                            expenseId = e.Id
-
-                        };
-                        resultComments.Add(comment);
-
+                        resultCommentsNoFilter.Add(newComment);
                     }
-                }  );
+                    else if (comment.Text.Contains(filterText))
+                    {
+                        resultComments.Add(newComment);
+                    }
+                });
             }
-            if (text == null)
+
+            //dysplay result 
+            if (filterText == null)
             {
                 return resultCommentsNoFilter;
             }
-            return resultComments;
+                return resultComments;
         }
 
     }

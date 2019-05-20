@@ -20,9 +20,9 @@ namespace Laborator2.Controllers
             this.commentService = commentService;
         }
         /// <summary>
-        /// 
+        /// GET: api/Comments
         /// </summary>
-        /// <param name="filter">Filter by text</param>
+        /// <param name="filter">Optional , filter by text or a part of text</param>
         /// <returns>A list of comments</returns>
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]

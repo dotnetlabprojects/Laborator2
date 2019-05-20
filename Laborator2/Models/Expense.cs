@@ -18,6 +18,7 @@ namespace Laborator2
         electronics,
         other
     }
+
     public class Expense
     {
         //[Key()]
@@ -31,5 +32,5 @@ namespace Laborator2
         public Type Type { get; set; }
         public List<Comment> Comments { get; set; }
 
-}
+    }
 }

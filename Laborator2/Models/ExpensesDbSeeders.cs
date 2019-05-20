@@ -24,8 +24,8 @@ namespace Laborator2.Models
                     Sum = 50,
                     Location = "Iulius Mall",
                     Date = new DateTime(2011, 4, 22),
-                    Currency= "lei",
-                    Type= Type.clothes 
+                    Currency = "lei",
+                    Type = Type.clothes
                 },
                  new Expense
                  {
@@ -36,15 +36,15 @@ namespace Laborator2.Models
                      Currency = "lei",
                      Type = Type.clothes
                  },
-                new Expense
-                {
-                    Description = "Bus ticket",
-                    Sum = 5,
-                    Location = "Cluj-Napoca",
-                    Date = new DateTime(2011, 5, 21),
-                    Currency = "lei",
-                    Type = Type.transportation
-                },
+                 new Expense
+                 {
+                     Description = "Bus ticket",
+                     Sum = 5,
+                     Location = "Cluj-Napoca",
+                     Date = new DateTime(2011, 5, 21),
+                     Currency = "lei",
+                     Type = Type.transportation
+                 },
                  new Expense
                  {
                      Description = "Bus tickets",

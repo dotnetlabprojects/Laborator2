@@ -21,9 +21,8 @@ namespace Laborator2.Controllers
         }
 
         /// <summary>
-        /// Get all expenses
+        /// GET: api/Expenses
         /// </summary>
-
         /// <param name="type">Optional , filter by type of expense</param>
         /// <param name="from">Optional , filter by minimum date </param>
         /// <param name="to">Optional , filter by maximum date</param>
@@ -33,18 +32,16 @@ namespace Laborator2.Controllers
         [HttpGet]
         public IEnumerable<Expense> Get([FromQuery]Type? type, [FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
-           return expenseService.GetAll(type,from,to);
-           // return expenseService.GetAllComments();
-           
+            return expenseService.GetAll(type, from, to);
         }
 
 
         /// <summary>
         /// GET: api/Expenses/1
         /// </summary>
-        /// <param name="id">expense id</param>
-        /// <returns>the expense with the given id</returns>
-         [ProducesResponseType(201)]
+        /// <param name="id">Expense id</param>
+        /// <returns>The expense with the given id</returns>
+        [ProducesResponseType(201)]
         [ProducesResponseType(404)]
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
@@ -55,38 +52,35 @@ namespace Laborator2.Controllers
             {
                 return NotFound();
             }
-
             return Ok(found);
         }
 
         /// <summary>
-        /// Add expense
+        /// PUT: api/Expenses
         /// </summary>
-        ///   <remarks>
+        ///<remarks>
         /// Sample request:
-        ///
         ///  {
-        ///  id: 7,
-        ///  description: "red dress",
-        ///  sum: 500,
-        ///  location: "Iulius Mall",
-        ///  date: "2011-04-22T00:00:00",
-        ///  currency: "lei",
-        ///  type: 3,
-        ///  comments: [
-        ///         {
-        ///         id: 3,
-        ///         text: "first comment",
-        ///         importan: false
-        ///         },
-        ///         {
-        ///         id: 4,
-        ///         text: "second comment",
-        ///         importan: false
-        ///         }
-        ///           ]
+        ///     id: 7,
+        ///     description: "red dress",
+        ///     sum: 500,
+        ///     location: "Iulius Mall",
+        ///     date: "2011-04-22T00:00:00",
+        ///     currency: "lei",
+        ///     type: 3,
+        ///     comments: [
+        ///                  {
+        ///                   id: 3,
+        ///                   text: "first comment",
+        ///                   importan: false
+        ///                  },
+        ///                  {
+        ///                   id: 4,
+        ///                   text: "second comment",
+        ///                   importan: false
+        ///                  }
+        ///               ]
         ///  }
-        ///
         /// </remarks>
         /// <param name="expense">The expense to add</param>
         [ProducesResponseType(201)]
@@ -101,26 +95,24 @@ namespace Laborator2.Controllers
         /// <summary>
         ///  PUT: api/Expenses/3
         /// </summary>
-        /// <param name="id">the expense id to update</param>
-        /// <param name="expense">expense to update</param>
-        /// <returns></returns>
+        /// <param name="id">the expense id to upsert</param>
+        /// <param name="expense">Expense to upsert</param>
+        /// <returns>The upsert expense</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public IActionResult Put(int id, [FromBody] Expense expense)
         {
             var result = expenseService.Upsert(id, expense);
-           
-                return Ok(expense);
-         
+            return Ok(expense);
         }
 
 
         /// <summary>
         /// DELETE: api/ApiWithActions/5
         /// </summary>
-        /// <param name="id">expense id  to delete</param>
-        /// <returns>an expense</returns>
+        /// <param name="id">Expense id to delete</param>
+        /// <returns>The deleted expense or null if there is no expense with the given id</returns>
         [ProducesResponseType(201)]
         [ProducesResponseType(404)]
         [HttpDelete("{id}")]
@@ -131,7 +123,6 @@ namespace Laborator2.Controllers
             {
                 return NotFound();
             }
-           
             return Ok(result);
         }
     }

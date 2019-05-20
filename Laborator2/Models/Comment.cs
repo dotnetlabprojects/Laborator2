@@ -10,7 +10,5 @@ namespace Laborator2.Models
         public int Id { get; set; }
         public string Text { get; set; }
         public bool Importan { get; set; }
-       // public int expenseId { get; set; }
-     
     }
 }
