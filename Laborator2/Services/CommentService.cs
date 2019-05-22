@@ -10,7 +10,7 @@ namespace Laborator2.Services
 {
     public interface ICommentService
     {
-        IEnumerable<CommentsGetModel> GetAllComments(string text);
+        IEnumerable<CommentGetModel> GetAllComments(string text);
     }
 
     public class CommentService : ICommentService
@@ -22,18 +22,18 @@ namespace Laborator2.Services
             this.context = context;
         }
 
-        public IEnumerable<CommentsGetModel> GetAllComments(string filterText)
+        public IEnumerable<CommentGetModel> GetAllComments(string filterText)
         {
             IQueryable<Expense> result = context.Expenses.Include(c => c.Comments);
 
-            List<CommentsGetModel> resultComments = new List<CommentsGetModel>();
-            List<CommentsGetModel> resultCommentsNoFilter = new List<CommentsGetModel>();
+            List<CommentGetModel> resultComments = new List<CommentGetModel>();
+            List<CommentGetModel> resultCommentsNoFilter = new List<CommentGetModel>();
 
             foreach (Expense expense in result)
             {
                 expense.Comments.ForEach(comment =>
                 {
-                    CommentsGetModel newComment = CommentsGetModel.ConvertToCommentsGetModel(comment, expense);
+                    CommentGetModel newComment = CommentGetModel.ConvertToCommentsGetModel(comment, expense);
                     
                     if (comment.Text == null || filterText == null)
                     {

@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Laborator2.ViewModels
 {
-    public class CommentsGetModel
+    public class CommentGetModel
     {
         public int Id { get; set; }
         public string Text { get; set; }
         public bool Importan { get; set; }
         public int ExpenseId { get; set; }
 
-        public static CommentsGetModel ConvertToCommentsGetModel(Comment comment, Expense expense)
+        public static CommentGetModel ConvertToCommentsGetModel(Comment comment, Expense expense)
         {
-            return new CommentsGetModel
+            return new CommentGetModel
             {
                 Id = comment.Id,
                 Importan = comment.Importan,

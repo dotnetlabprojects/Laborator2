@@ -27,7 +27,7 @@ namespace Laborator2.Controllers
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [HttpGet]
-        public IEnumerable<CommentsGetModel> Get([FromQuery]string filter)
+        public IEnumerable<CommentGetModel> Get([FromQuery]string filter)
         {
             return commentService.GetAllComments(filter);
 
